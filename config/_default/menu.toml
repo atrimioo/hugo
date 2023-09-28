@@ -21,4 +21,4 @@ name = "Twitter"
 url = "https://twitter.com"
 
 [social.params]
-icon = "fa-solid fa-brain"
+icon = "brain-solid"
