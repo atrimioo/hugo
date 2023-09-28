@@ -1,7 +1,7 @@
 ---
-title: Markdown Syntax Guide
+title: ArchLinux安装Hyprland+Nvidia
 date: 2023-09-28
-description: Sample article showcasing basic Markdown syntax and formatting for HTML elements.
+description: 在Intel+Nvidia的环境下让hyprland使用独显运行
 image: hyprland.png
 tags: 
     - Archlinux
