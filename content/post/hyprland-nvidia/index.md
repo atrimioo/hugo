@@ -45,6 +45,7 @@ exec Hyprland
 ## 安装Hyprland
 ```
 sudo pacman -S hyprland-nvidia-git  wlroots-nvidia xdg-desktop-portal-hyprland-git xorg-xwayland 
+
 ```
 ## 配置显示器
 `monitor=DP-1,2560x1440@144.001007,0x0,1`
@@ -54,8 +55,8 @@ sudo pacman -S qt5-wayland qt5ct libva
 paru -S libva-nvidia-driver-git
 ```
 ## HyprLand完整配置
-```
-	  monitor=,preferred,auto,auto
+```   
+      monitor=,preferred,auto,auto
 	  monitor=DP-1,2560x1440@144.001007,0x0,1
 	  monitor=HDMI-A-1,1920x1080@60,0x0,1
 	  monitor=eDP-1,disable
