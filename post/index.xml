@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Mio</title><link>https://atrimioo.github.io/hugo/post/</link><description>Recent content in Posts on Mio</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 28 Sep 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://atrimioo.github.io/hugo/post/index.xml" rel="self" type="application/rss+xml"/><item><title>ArchLinux安装Hyprland+Nvidia</title><link>https://atrimioo.github.io/hugo/p/archlinux%E5%AE%89%E8%A3%85hyprland-nvidia/</link><pubDate>Thu, 28 Sep 2023 00:00:00 +0000</pubDate><guid>https://atrimioo.github.io/hugo/p/archlinux%E5%AE%89%E8%A3%85hyprland-nvidia/</guid><description>&lt;img src="https://atrimioo.github.io/hugo/p/archlinux%E5%AE%89%E8%A3%85hyprland-nvidia/hyprland.png" alt="Featured image of post ArchLinux安装Hyprland+Nvidia" />&lt;h2 id="安装驱动">安装驱动&lt;/h2>
+&lt;h3 id="使用开源的nvidia-open安装">使用开源的nvidia-open安装&lt;/h3>
+&lt;ol>
+&lt;li>&lt;code>sudo pacman -S nvidia-open-dkms linux-headers nvidia-open&lt;/code>&lt;/li>
+&lt;li>查看是否有显卡信息&lt;code>nvidia-smi&lt;/code>&lt;/li>
+&lt;li>加入内核模块&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">modprobe nvidia NVreg_OpenRmEnableUnsupportedGpus=1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">modprobe nvidia_drm modeset=1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">modprobe nvidia nvidia_drm.modeset=1 # 可以不加
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">modprobe nvidia NVreg_RegistryDwords=&amp;#34;PowerMizerEnable=0x1; PerfLevelSrc=0x2222; PowerMizerLevel=0x3; PowerMizerDefault=0x3; PowerMizerDefaultAC=0x3&amp;#34;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol start="4">
+&lt;li>重新加载&lt;code>mkinitcpio&lt;/code>检查模块是否存在&lt;/li>
+&lt;/ol>
+&lt;h2 id="安装seatd-和-polkit">安装Seatd 和 Polkit&lt;/h2>
+&lt;ol>
+&lt;li>&lt;code>sudo pacman -S polkit&lt;/code>&lt;/li>
+&lt;li>添加用户组&lt;code>sudo usermod -a -G seat username&lt;/code>&lt;/li>
+&lt;li>设置Seatd开机启动&lt;code>sudo systemctl enable seatd&lt;/code>&lt;/li>
+&lt;/ol>
+&lt;h2 id="添加环境变量">添加环境变量&lt;/h2>
+&lt;p>在&lt;code>nvim ~/.bash_profile&lt;/code>添加变量&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="k">export&lt;/span> &lt;span class="n">WLR_DRM_DEVICES&lt;/span>&lt;span class="o">=/&lt;/span>&lt;span class="n">dev&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">dri&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">card1&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">dev&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">dri&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">card0&lt;/span> &lt;span class="c1"># 只启动nvidia输出&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">export&lt;/span> &lt;span class="n">LIBVA_DRIVER_NAME&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">nvidia&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">export&lt;/span> &lt;span class="n">XDG_SESSION_TYPE&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">wayland&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#export GBM_BACKEND=nvidia-drm&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">export&lt;/span> &lt;span class="n">__GLX_VENDOR_LIBRARY_NAME&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">nvidia&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">export&lt;/span> &lt;span class="n">WLR_NO_HARDWARE_CURSORS&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">export&lt;/span> &lt;span class="n">MOZ_ENABLE_WAYLAND&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">1&lt;/span> &lt;span class="c1"># (REQUIRED: Firefox will break ot&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#export WLR_RENDERER=vulkan (WARNING: This breaks for me.)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">exec&lt;/span> &lt;span class="n">Hyprland&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="安装hyprland">安装Hyprland&lt;/h2>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">sudo pacman -S hyprland-nvidia-git wlroots-nvidia xdg-desktop-portal-hyprland-git xorg-xwayland
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="配置显示器">配置显示器&lt;/h2>
+&lt;p>&lt;code>monitor=DP-1,2560x1440@144.001007,0x0,1&lt;/code>&lt;/p>
+&lt;h2 id="部分软件依赖">部分软件依赖&lt;/h2>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">sudo pacman -S qt5-wayland qt5ct libva
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">paru -S libva-nvidia-driver-git
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="hyprland完整配置">HyprLand完整配置&lt;/h2>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt"> 10
+&lt;/span>&lt;span class="lnt"> 11
+&lt;/span>&lt;span class="lnt"> 12
+&lt;/span>&lt;span class="lnt"> 13
+&lt;/span>&lt;span class="lnt"> 14
+&lt;/span>&lt;span class="lnt"> 15
+&lt;/span>&lt;span class="lnt"> 16
+&lt;/span>&lt;span class="lnt"> 17
+&lt;/span>&lt;span class="lnt"> 18
+&lt;/span>&lt;span class="lnt"> 19
+&lt;/span>&lt;span class="lnt"> 20
+&lt;/span>&lt;span class="lnt"> 21
+&lt;/span>&lt;span class="lnt"> 22
+&lt;/span>&lt;span class="lnt"> 23
+&lt;/span>&lt;span class="lnt"> 24
+&lt;/span>&lt;span class="lnt"> 25
+&lt;/span>&lt;span class="lnt"> 26
+&lt;/span>&lt;span class="lnt"> 27
+&lt;/span>&lt;span class="lnt"> 28
+&lt;/span>&lt;span class="lnt"> 29
+&lt;/span>&lt;span class="lnt"> 30
+&lt;/span>&lt;span class="lnt"> 31
+&lt;/span>&lt;span class="lnt"> 32
+&lt;/span>&lt;span class="lnt"> 33
+&lt;/span>&lt;span class="lnt"> 34
+&lt;/span>&lt;span class="lnt"> 35
+&lt;/span>&lt;span class="lnt"> 36
+&lt;/span>&lt;span class="lnt"> 37
+&lt;/span>&lt;span class="lnt"> 38
+&lt;/span>&lt;span class="lnt"> 39
+&lt;/span>&lt;span class="lnt"> 40
+&lt;/span>&lt;span class="lnt"> 41
+&lt;/span>&lt;span class="lnt"> 42
+&lt;/span>&lt;span class="lnt"> 43
+&lt;/span>&lt;span class="lnt"> 44
+&lt;/span>&lt;span class="lnt"> 45
+&lt;/span>&lt;span class="lnt"> 46
+&lt;/span>&lt;span class="lnt"> 47
+&lt;/span>&lt;span class="lnt"> 48
+&lt;/span>&lt;span class="lnt"> 49
+&lt;/span>&lt;span class="lnt"> 50
+&lt;/span>&lt;span class="lnt"> 51
+&lt;/span>&lt;span class="lnt"> 52
+&lt;/span>&lt;span class="lnt"> 53
+&lt;/span>&lt;span class="lnt"> 54
+&lt;/span>&lt;span class="lnt"> 55
+&lt;/span>&lt;span class="lnt"> 56
+&lt;/span>&lt;span class="lnt"> 57
+&lt;/span>&lt;span class="lnt"> 58
+&lt;/span>&lt;span class="lnt"> 59
+&lt;/span>&lt;span class="lnt"> 60
+&lt;/span>&lt;span class="lnt"> 61
+&lt;/span>&lt;span class="lnt"> 62
+&lt;/span>&lt;span class="lnt"> 63
+&lt;/span>&lt;span class="lnt"> 64
+&lt;/span>&lt;span class="lnt"> 65
+&lt;/span>&lt;span class="lnt"> 66
+&lt;/span>&lt;span class="lnt"> 67
+&lt;/span>&lt;span class="lnt"> 68
+&lt;/span>&lt;span class="lnt"> 69
+&lt;/span>&lt;span class="lnt"> 70
+&lt;/span>&lt;span class="lnt"> 71
+&lt;/span>&lt;span class="lnt"> 72
+&lt;/span>&lt;span class="lnt"> 73
+&lt;/span>&lt;span class="lnt"> 74
+&lt;/span>&lt;span class="lnt"> 75
+&lt;/span>&lt;span class="lnt"> 76
+&lt;/span>&lt;span class="lnt"> 77
+&lt;/span>&lt;span class="lnt"> 78
+&lt;/span>&lt;span class="lnt"> 79
+&lt;/span>&lt;span class="lnt"> 80
+&lt;/span>&lt;span class="lnt"> 81
+&lt;/span>&lt;span class="lnt"> 82
+&lt;/span>&lt;span class="lnt"> 83
+&lt;/span>&lt;span class="lnt"> 84
+&lt;/span>&lt;span class="lnt"> 85
+&lt;/span>&lt;span class="lnt"> 86
+&lt;/span>&lt;span class="lnt"> 87
+&lt;/span>&lt;span class="lnt"> 88
+&lt;/span>&lt;span class="lnt"> 89
+&lt;/span>&lt;span class="lnt"> 90
+&lt;/span>&lt;span class="lnt"> 91
+&lt;/span>&lt;span class="lnt"> 92
+&lt;/span>&lt;span class="lnt"> 93
+&lt;/span>&lt;span class="lnt"> 94
+&lt;/span>&lt;span class="lnt"> 95
+&lt;/span>&lt;span class="lnt"> 96
+&lt;/span>&lt;span class="lnt"> 97
+&lt;/span>&lt;span class="lnt"> 98
+&lt;/span>&lt;span class="lnt"> 99
+&lt;/span>&lt;span class="lnt">100
+&lt;/span>&lt;span class="lnt">101
+&lt;/span>&lt;span class="lnt">102
+&lt;/span>&lt;span class="lnt">103
+&lt;/span>&lt;span class="lnt">104
+&lt;/span>&lt;span class="lnt">105
+&lt;/span>&lt;span class="lnt">106
+&lt;/span>&lt;span class="lnt">107
+&lt;/span>&lt;span class="lnt">108
+&lt;/span>&lt;span class="lnt">109
+&lt;/span>&lt;span class="lnt">110
+&lt;/span>&lt;span class="lnt">111
+&lt;/span>&lt;span class="lnt">112
+&lt;/span>&lt;span class="lnt">113
+&lt;/span>&lt;span class="lnt">114
+&lt;/span>&lt;span class="lnt">115
+&lt;/span>&lt;span class="lnt">116
+&lt;/span>&lt;span class="lnt">117
+&lt;/span>&lt;span class="lnt">118
+&lt;/span>&lt;span class="lnt">119
+&lt;/span>&lt;span class="lnt">120
+&lt;/span>&lt;span class="lnt">121
+&lt;/span>&lt;span class="lnt">122
+&lt;/span>&lt;span class="lnt">123
+&lt;/span>&lt;span class="lnt">124
+&lt;/span>&lt;span class="lnt">125
+&lt;/span>&lt;span class="lnt">126
+&lt;/span>&lt;span class="lnt">127
+&lt;/span>&lt;span class="lnt">128
+&lt;/span>&lt;span class="lnt">129
+&lt;/span>&lt;span class="lnt">130
+&lt;/span>&lt;span class="lnt">131
+&lt;/span>&lt;span class="lnt">132
+&lt;/span>&lt;span class="lnt">133
+&lt;/span>&lt;span class="lnt">134
+&lt;/span>&lt;span class="lnt">135
+&lt;/span>&lt;span class="lnt">136
+&lt;/span>&lt;span class="lnt">137
+&lt;/span>&lt;span class="lnt">138
+&lt;/span>&lt;span class="lnt">139
+&lt;/span>&lt;span class="lnt">140
+&lt;/span>&lt;span class="lnt">141
+&lt;/span>&lt;span class="lnt">142
+&lt;/span>&lt;span class="lnt">143
+&lt;/span>&lt;span class="lnt">144
+&lt;/span>&lt;span class="lnt">145
+&lt;/span>&lt;span class="lnt">146
+&lt;/span>&lt;span class="lnt">147
+&lt;/span>&lt;span class="lnt">148
+&lt;/span>&lt;span class="lnt">149
+&lt;/span>&lt;span class="lnt">150
+&lt;/span>&lt;span class="lnt">151
+&lt;/span>&lt;span class="lnt">152
+&lt;/span>&lt;span class="lnt">153
+&lt;/span>&lt;span class="lnt">154
+&lt;/span>&lt;span class="lnt">155
+&lt;/span>&lt;span class="lnt">156
+&lt;/span>&lt;span class="lnt">157
+&lt;/span>&lt;span class="lnt">158
+&lt;/span>&lt;span class="lnt">159
+&lt;/span>&lt;span class="lnt">160
+&lt;/span>&lt;span class="lnt">161
+&lt;/span>&lt;span class="lnt">162
+&lt;/span>&lt;span class="lnt">163
+&lt;/span>&lt;span class="lnt">164
+&lt;/span>&lt;span class="lnt">165
+&lt;/span>&lt;span class="lnt">166
+&lt;/span>&lt;span class="lnt">167
+&lt;/span>&lt;span class="lnt">168
+&lt;/span>&lt;span class="lnt">169
+&lt;/span>&lt;span class="lnt">170
+&lt;/span>&lt;span class="lnt">171
+&lt;/span>&lt;span class="lnt">172
+&lt;/span>&lt;span class="lnt">173
+&lt;/span>&lt;span class="lnt">174
+&lt;/span>&lt;span class="lnt">175
+&lt;/span>&lt;span class="lnt">176
+&lt;/span>&lt;span class="lnt">177
+&lt;/span>&lt;span class="lnt">178
+&lt;/span>&lt;span class="lnt">179
+&lt;/span>&lt;span class="lnt">180
+&lt;/span>&lt;span class="lnt">181
+&lt;/span>&lt;span class="lnt">182
+&lt;/span>&lt;span class="lnt">183
+&lt;/span>&lt;span class="lnt">184
+&lt;/span>&lt;span class="lnt">185
+&lt;/span>&lt;span class="lnt">186
+&lt;/span>&lt;span class="lnt">187
+&lt;/span>&lt;span class="lnt">188
+&lt;/span>&lt;span class="lnt">189
+&lt;/span>&lt;span class="lnt">190
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl"> monitor=,preferred,auto,auto
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> monitor=DP-1,2560x1440@144.001007,0x0,1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> monitor=HDMI-A-1,1920x1080@60,0x0,1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> monitor=eDP-1,disable
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> exec-once = swww query || swww init &amp;amp;&amp;amp; swww img $HOME/image/bg-7.png
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> exec-once = waybar &amp;amp; mako &amp;amp; fcitx5 -d &amp;amp; clash-verge &amp;amp; nm-applet
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> exec-once = dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> exec-once = wl-paste --type text --watch cliphist store #Stores only text data
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> env = XCURSOR_SIZE,24
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> input {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> kb_layout = us
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> kb_variant =
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> kb_model =
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> kb_options =
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> kb_rules =
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> follow_mouse = 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> touchpad {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> natural_scroll = no
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> sensitivity = 0 # -1.0 - 1.0, 0 means no modification.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> general {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> gaps_in = 5
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> gaps_out = 8
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> border_size = 0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> col.active_border = rgb(5C5470) rgb(B9B4C7)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> col.inactive_border = 0xff45475a
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> apply_sens_to_raw = false
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> col.group_border = 0xff89dceb
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> col.group_border_active = 0xfff9e2af
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> layout = dwindle
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> decoration {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> rounding = 10
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> multisample_edges = true
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> drop_shadow = yes
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> shadow_range = 10
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> shadow_render_power = 3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> col.shadow = rgba(1a1a1aee)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> blur {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> enabled = true
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> new_optimizations =true
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> size = 4
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> passes = 2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ignore_opacity = true
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> misc {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> disable_hyprland_logo = yes
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> #disable_splash_rendering = true
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> #no_direct_scanout = true
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> no_direct_scanout = true
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> animations {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> enabled=1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # bezier=overshot,0.05,0.9,0.1,1.1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bezier=overshot,0.13,0.99,0.29,1.1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> animation=windows, 1, 4, overshot
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> animation=windowsOut,1, 7, overshot, popin 80%
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> animation=border, 1, 10, default
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> animation=fade, 1, 1, default
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> animation=workspaces,1,4,overshot,slidevert
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> dwindle {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> pseudotile = yes
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> preserve_split = yes
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> no_gaps_when_only = 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> master {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> new_is_master = true
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> gestures {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> workspace_swipe = off
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> device:epic-mouse-v1 {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> sensitivity = -0.5
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> windowrule = float,^(pavucontrol)$
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> windowrule = float, title:^(btop)$
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> windowrule = maximize,title:^(nsxiv)$
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> windowrule = float,^(thunar)$
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> windowrulev2 = size 1200 800,class:^(thunar)$
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> windowrulev2 = center,class:^(thunar)$
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> windowrulev2 = animation popin 80%,class:^(thunar)$
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> windowrulev2 = opacity 0.95 0.95,class:^(thunar)$
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> windowrulev2 = center,class:^(wofi)$
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> windowrulev2 = opacity 0.95 0.95,class:^(wofi)$
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> windowrulev2 = bordersize 2,class:^(wofi)$
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> windowrule = float,title:^(fly_is_kitty)$
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> windowrule = move 30%,title:(fly_is_kitty)$
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> windowrule = size 1000 600,title:^(fly_is_kitty)$
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> windowrule = bordersize 2,title:^(fly_is_kitty)$
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> #windowrule = tile,:^(kitty)$
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> windowrulev2 = opacity 0.8 0.8,class:^(kitty)$
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> windowrule = animation slide,title:^(all_is_kitty)$
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> windowrule = float,title:^(all_is_kitty)$
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> windowrule = float,title:^(lf)$
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> windowrule = size 1200 800,title:^(lf)$
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> windowrule = center,title:(lf)$
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> windowrule = bordersize 2,title:^(lf)$
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> $mainMod = SUPER
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, Q, exec, kitty #open the terminal
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, W, killactive, # close the active window
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, M, exec, wlogout --protocol layer-shell # show the logout window
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod SHIFT, M, exit, # Exit Hyprland all together no (force quit Hyprland)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, E, exec, thunar # Show the graphical file browser
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, V, togglefloating, # Allow a window to float
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, SPACE, exec, wofi # Show the graphical app launcher
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, P, pseudo, # dwindle
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, J, togglesplit, # dwindle
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, B, exec, killall waybar || waybar
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, D, exec, kitty lf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, S, exec, fish -c &amp;#39;hyprshot -m region&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, A, exec, kitty --title fly_is_kitty
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, F, fullscreen
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, L, exec, logseq
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, X, exec, cliphist list | wofi --dmenu | cliphist decode | wl-copy
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # Move focus with mainMod + arrow keys
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, left, movefocus, l
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, right, movefocus, r
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, up, movefocus, u
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, down, movefocus, d
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # Switch workspaces with mainMod + [0-9]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, 1, workspace, 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, 2, workspace, 2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, 3, workspace, 3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, 4, workspace, 4
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, 5, workspace, 5
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, 6, workspace, 6
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, 7, workspace, 7
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, 8, workspace, 8
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, 9, workspace, 9
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, 0, workspace, 10
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # Resize windows
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod SHIFT, left, resizeactive, -100 0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod SHIFT, right, resizeactive, 100 0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod SHIFT, up, resizeactive, 0 -100
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod SHIFT, down, resizeactive, 0 100
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # Move windows
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod ALT, left, movewindow, l
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod ALT, right, movewindow, r
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod ALT, up, movewindow, u
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod ALT, down, movewindow, d
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # Move active window to a workspace with mainMod + SHIFT + [0-9]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod SHIFT, 1, movetoworkspace, 1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod SHIFT, 2, movetoworkspace, 2
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod SHIFT, 3, movetoworkspace, 3
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod SHIFT, 4,movetoworkspace, 4
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod SHIFT, 5, movetoworkspace, 5
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod SHIFT, 6, movetoworkspace, 6
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod SHIFT, 7, movetoworkspace, 7
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod SHIFT, 8, movetoworkspace, 8
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod SHIFT, 9, movetoworkspace, 9
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod SHIFT, 0, movetoworkspace, 10
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # Scroll through existing workspaces with mainMod + scroll
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, mouse_down, workspace, e+1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bind = $mainMod, mouse_up, workspace, e-1
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> # Move/resize windows with mainMod + LMB/RMB and dragging
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bindm = $mainMod, mouse:272, movewindow
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> bindm = $mainMod, mouse:273, resizewindow
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> ```
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item></channel></rss>

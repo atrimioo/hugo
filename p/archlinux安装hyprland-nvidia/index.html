@@ -1,0 +1,425 @@
+<!doctype html><html lang=en-us dir=ltr><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="在Intel+Nvidia的环境下让hyprland使用独显运行"><title>ArchLinux安装Hyprland+Nvidia</title><link rel=canonical href=https://atrimioo.github.io/hugo/p/archlinux%E5%AE%89%E8%A3%85hyprland-nvidia/><link rel=stylesheet href=/hugo/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css><meta property="og:title" content="ArchLinux安装Hyprland+Nvidia"><meta property="og:description" content="在Intel+Nvidia的环境下让hyprland使用独显运行"><meta property="og:url" content="https://atrimioo.github.io/hugo/p/archlinux%E5%AE%89%E8%A3%85hyprland-nvidia/"><meta property="og:site_name" content="Mio"><meta property="og:type" content="article"><meta property="article:section" content="Post"><meta property="article:tag" content="Archlinux"><meta property="article:tag" content="Hyprland"><meta property="article:tag" content="Nvidia"><meta property="article:tag" content="Window Manager"><meta property="article:published_time" content="2023-09-28T00:00:00+00:00"><meta property="article:modified_time" content="2023-09-28T00:00:00+00:00"><meta property="og:image" content="https://atrimioo.github.io/hugo/p/archlinux%E5%AE%89%E8%A3%85hyprland-nvidia/hyprland.png"><meta name=twitter:title content="ArchLinux安装Hyprland+Nvidia"><meta name=twitter:description content="在Intel+Nvidia的环境下让hyprland使用独显运行"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://atrimioo.github.io/hugo/p/archlinux%E5%AE%89%E8%A3%85hyprland-nvidia/hyprland.png"><link rel="shortcut icon" href=/favicon.png></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label="Toggle Menu">
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/hugo/><img src=/hugo/img/avatar_hu3d03a01dcc18bc5be0e67db3d8d209a6_2733449_300x0_resize_box_3.png width=300 height=200 class=site-logo loading=lazy alt=Avatar></a></figure><div class=site-meta><h1 class=site-name><a href=/hugo>Mio</a></h1><h2 class=site-description></h2></div></header><ol class=social-menu><li><a href=https://github.com/atrimioo target=_blank title=GitHub rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://twitter.com target=_blank title=Twitter rel=me><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M184 0c30.9.0 56 25.1 56 56V456c0 30.9-25.1 56-56 56-28.9.0-52.7-21.9-55.7-50.1-5.2 1.4-10.7 2.1-16.3 2.1-35.3.0-64-28.7-64-64 0-7.4 1.3-14.6 3.6-21.2C21.4 367.4.0 338.2.0 304c0-31.9 18.7-59.5 45.8-72.3C37.1 220.8 32 207 32 192c0-30.7 21.6-56.3 50.4-62.6C80.8 123.9 80 118 80 112c0-29.9 20.6-55.1 48.3-62.1C131.3 21.9 155.1.0 184 0zM328 0c28.9.0 52.6 21.9 55.7 49.9C411.5 56.9 432 82 432 112c0 6-.8 11.9-2.4 17.4 28.8 6.2 50.4 31.9 50.4 62.6.0 15-5.1 28.8-13.8 39.7C493.3 244.5 512 272.1 512 304c0 34.2-21.4 63.4-51.6 74.8 2.3 6.6 3.6 13.8 3.6 21.2.0 35.3-28.7 64-64 64-5.6.0-11.1-.7-16.3-2.1-3 28.2-26.8 50.1-55.7 50.1-30.9.0-56-25.1-56-56V56c0-30.9 25.1-56 56-56z"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/hugo/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg><span>Home</span></a></li><li><a href=/hugo/archives/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg><span>Archives</span></a></li><li><a href=/hugo/search/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg><span>Search</span></a></li><li><a href=/hugo/links/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg><span>Links</span></a></li><div class=menu-bottom-section><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg><span>Dark Mode</span></li></div></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">Table of contents</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#安装驱动>安装驱动</a><ol><li><a href=#使用开源的nvidia-open安装>使用开源的nvidia-open安装</a></li></ol></li><li><a href=#安装seatd-和-polkit>安装Seatd 和 Polkit</a></li><li><a href=#添加环境变量>添加环境变量</a></li><li><a href=#安装hyprland>安装Hyprland</a></li><li><a href=#配置显示器>配置显示器</a></li><li><a href=#部分软件依赖>部分软件依赖</a></li><li><a href=#hyprland完整配置>HyprLand完整配置</a></li></ol></nav></div></section></aside><main class="main full-width"><article class="has-image main-article"><header class=article-header><div class=article-image><a href=/hugo/p/archlinux%E5%AE%89%E8%A3%85hyprland-nvidia/><img src=/hugo/p/archlinux%E5%AE%89%E8%A3%85hyprland-nvidia/hyprland_hubc0dd5125bce3d88c6ff0d9375140794_37232_800x0_resize_box_3.png srcset="/hugo/p/archlinux%E5%AE%89%E8%A3%85hyprland-nvidia/hyprland_hubc0dd5125bce3d88c6ff0d9375140794_37232_800x0_resize_box_3.png 800w, /hugo/p/archlinux%E5%AE%89%E8%A3%85hyprland-nvidia/hyprland_hubc0dd5125bce3d88c6ff0d9375140794_37232_1600x0_resize_box_3.png 1600w" width=800 height=313 loading=lazy alt="Featured image of post ArchLinux安装Hyprland+Nvidia"></a></div><div class=article-details><header class=article-category><a href=/hugo/categories/nvidia/>Nvidia</a>
+<a href=/hugo/categories/linux/>Linux</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/hugo/p/archlinux%E5%AE%89%E8%A3%85hyprland-nvidia/>ArchLinux安装Hyprland+Nvidia</a></h2><h3 class=article-subtitle>在Intel+Nvidia的环境下让hyprland使用独显运行</h3></div><footer class=article-time><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg><time class=article-time--published>Sep 28, 2023</time></div><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg><time class=article-time--reading>5 minute read</time></div></footer></div></header><section class=article-content><h2 id=安装驱动>安装驱动</h2><h3 id=使用开源的nvidia-open安装>使用开源的nvidia-open安装</h3><ol><li><code>sudo pacman -S nvidia-open-dkms linux-headers nvidia-open</code></li><li>查看是否有显卡信息<code>nvidia-smi</code></li><li>加入内核模块</li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>modprobe nvidia NVreg_OpenRmEnableUnsupportedGpus=1
+</span></span><span class=line><span class=cl>modprobe nvidia_drm modeset=1
+</span></span><span class=line><span class=cl>modprobe nvidia nvidia_drm.modeset=1 # 可以不加
+</span></span><span class=line><span class=cl>modprobe nvidia NVreg_RegistryDwords=&#34;PowerMizerEnable=0x1; PerfLevelSrc=0x2222; PowerMizerLevel=0x3; PowerMizerDefault=0x3; PowerMizerDefaultAC=0x3&#34;
+</span></span></code></pre></td></tr></table></div></div><ol start=4><li>重新加载<code>mkinitcpio</code>检查模块是否存在</li></ol><h2 id=安装seatd-和-polkit>安装Seatd 和 Polkit</h2><ol><li><code>sudo pacman -S polkit</code></li><li>添加用户组<code>sudo usermod -a -G seat username</code></li><li>设置Seatd开机启动<code>sudo systemctl enable seatd</code></li></ol><h2 id=添加环境变量>添加环境变量</h2><p>在<code>nvim ~/.bash_profile</code>添加变量</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=k>export</span> <span class=n>WLR_DRM_DEVICES</span><span class=o>=/</span><span class=n>dev</span><span class=o>/</span><span class=n>dri</span><span class=o>/</span><span class=n>card1</span><span class=p>:</span><span class=o>/</span><span class=n>dev</span><span class=o>/</span><span class=n>dri</span><span class=o>/</span><span class=n>card0</span>  <span class=c1># 只启动nvidia输出</span>
+</span></span><span class=line><span class=cl><span class=k>export</span> <span class=n>LIBVA_DRIVER_NAME</span><span class=o>=</span><span class=n>nvidia</span>
+</span></span><span class=line><span class=cl><span class=k>export</span> <span class=n>XDG_SESSION_TYPE</span><span class=o>=</span><span class=n>wayland</span>
+</span></span><span class=line><span class=cl><span class=c1>#export GBM_BACKEND=nvidia-drm</span>
+</span></span><span class=line><span class=cl><span class=k>export</span> <span class=n>__GLX_VENDOR_LIBRARY_NAME</span><span class=o>=</span><span class=n>nvidia</span>
+</span></span><span class=line><span class=cl><span class=k>export</span> <span class=n>WLR_NO_HARDWARE_CURSORS</span><span class=o>=</span><span class=mi>1</span>
+</span></span><span class=line><span class=cl><span class=k>export</span> <span class=n>MOZ_ENABLE_WAYLAND</span><span class=o>=</span><span class=mi>1</span> <span class=c1># (REQUIRED: Firefox will break ot&gt;</span>
+</span></span><span class=line><span class=cl><span class=c1>#export WLR_RENDERER=vulkan (WARNING: This breaks for me.)</span>
+</span></span><span class=line><span class=cl><span class=n>exec</span> <span class=n>Hyprland</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=安装hyprland>安装Hyprland</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>sudo pacman -S hyprland-nvidia-git  wlroots-nvidia xdg-desktop-portal-hyprland-git xorg-xwayland 
+</span></span></code></pre></td></tr></table></div></div><h2 id=配置显示器>配置显示器</h2><p><code>monitor=DP-1,2560x1440@144.001007,0x0,1</code></p><h2 id=部分软件依赖>部分软件依赖</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>sudo pacman -S qt5-wayland qt5ct libva
+</span></span><span class=line><span class=cl>paru -S libva-nvidia-driver-git
+</span></span></code></pre></td></tr></table></div></div><h2 id=hyprland完整配置>HyprLand完整配置</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span><span class=lnt>117
+</span><span class=lnt>118
+</span><span class=lnt>119
+</span><span class=lnt>120
+</span><span class=lnt>121
+</span><span class=lnt>122
+</span><span class=lnt>123
+</span><span class=lnt>124
+</span><span class=lnt>125
+</span><span class=lnt>126
+</span><span class=lnt>127
+</span><span class=lnt>128
+</span><span class=lnt>129
+</span><span class=lnt>130
+</span><span class=lnt>131
+</span><span class=lnt>132
+</span><span class=lnt>133
+</span><span class=lnt>134
+</span><span class=lnt>135
+</span><span class=lnt>136
+</span><span class=lnt>137
+</span><span class=lnt>138
+</span><span class=lnt>139
+</span><span class=lnt>140
+</span><span class=lnt>141
+</span><span class=lnt>142
+</span><span class=lnt>143
+</span><span class=lnt>144
+</span><span class=lnt>145
+</span><span class=lnt>146
+</span><span class=lnt>147
+</span><span class=lnt>148
+</span><span class=lnt>149
+</span><span class=lnt>150
+</span><span class=lnt>151
+</span><span class=lnt>152
+</span><span class=lnt>153
+</span><span class=lnt>154
+</span><span class=lnt>155
+</span><span class=lnt>156
+</span><span class=lnt>157
+</span><span class=lnt>158
+</span><span class=lnt>159
+</span><span class=lnt>160
+</span><span class=lnt>161
+</span><span class=lnt>162
+</span><span class=lnt>163
+</span><span class=lnt>164
+</span><span class=lnt>165
+</span><span class=lnt>166
+</span><span class=lnt>167
+</span><span class=lnt>168
+</span><span class=lnt>169
+</span><span class=lnt>170
+</span><span class=lnt>171
+</span><span class=lnt>172
+</span><span class=lnt>173
+</span><span class=lnt>174
+</span><span class=lnt>175
+</span><span class=lnt>176
+</span><span class=lnt>177
+</span><span class=lnt>178
+</span><span class=lnt>179
+</span><span class=lnt>180
+</span><span class=lnt>181
+</span><span class=lnt>182
+</span><span class=lnt>183
+</span><span class=lnt>184
+</span><span class=lnt>185
+</span><span class=lnt>186
+</span><span class=lnt>187
+</span><span class=lnt>188
+</span><span class=lnt>189
+</span><span class=lnt>190
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>      monitor=,preferred,auto,auto
+</span></span><span class=line><span class=cl>	  monitor=DP-1,2560x1440@144.001007,0x0,1
+</span></span><span class=line><span class=cl>	  monitor=HDMI-A-1,1920x1080@60,0x0,1
+</span></span><span class=line><span class=cl>	  monitor=eDP-1,disable
+</span></span><span class=line><span class=cl>	  
+</span></span><span class=line><span class=cl>	  exec-once = swww query || swww init &amp;&amp; swww img $HOME/image/bg-7.png
+</span></span><span class=line><span class=cl>	  exec-once = waybar &amp; mako &amp; fcitx5 -d &amp; clash-verge &amp; nm-applet
+</span></span><span class=line><span class=cl>	  exec-once = dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+</span></span><span class=line><span class=cl>	  exec-once = wl-paste --type text --watch cliphist store #Stores only text data
+</span></span><span class=line><span class=cl>	  
+</span></span><span class=line><span class=cl>	  env = XCURSOR_SIZE,24
+</span></span><span class=line><span class=cl>	  
+</span></span><span class=line><span class=cl>	  input {
+</span></span><span class=line><span class=cl>	      kb_layout = us
+</span></span><span class=line><span class=cl>	      kb_variant =
+</span></span><span class=line><span class=cl>	      kb_model =
+</span></span><span class=line><span class=cl>	      kb_options =
+</span></span><span class=line><span class=cl>	      kb_rules =
+</span></span><span class=line><span class=cl>	      follow_mouse = 1
+</span></span><span class=line><span class=cl>	      touchpad {
+</span></span><span class=line><span class=cl>	          natural_scroll = no
+</span></span><span class=line><span class=cl>	      }
+</span></span><span class=line><span class=cl>	      sensitivity = 0 # -1.0 - 1.0, 0 means no modification.
+</span></span><span class=line><span class=cl>	  }
+</span></span><span class=line><span class=cl>	  
+</span></span><span class=line><span class=cl>	  general {
+</span></span><span class=line><span class=cl>	      gaps_in = 5
+</span></span><span class=line><span class=cl>	      gaps_out = 8
+</span></span><span class=line><span class=cl>	      border_size = 0
+</span></span><span class=line><span class=cl>	      col.active_border = rgb(5C5470) rgb(B9B4C7)
+</span></span><span class=line><span class=cl>	      col.inactive_border = 0xff45475a
+</span></span><span class=line><span class=cl>	      apply_sens_to_raw = false
+</span></span><span class=line><span class=cl>	      col.group_border = 0xff89dceb
+</span></span><span class=line><span class=cl>	      col.group_border_active = 0xfff9e2af    
+</span></span><span class=line><span class=cl>	      layout = dwindle
+</span></span><span class=line><span class=cl>	  }
+</span></span><span class=line><span class=cl>	  
+</span></span><span class=line><span class=cl>	  decoration {
+</span></span><span class=line><span class=cl>	      rounding = 10
+</span></span><span class=line><span class=cl>	      multisample_edges = true
+</span></span><span class=line><span class=cl>	      drop_shadow = yes
+</span></span><span class=line><span class=cl>	      shadow_range = 10
+</span></span><span class=line><span class=cl>	      shadow_render_power = 3
+</span></span><span class=line><span class=cl>	      col.shadow = rgba(1a1a1aee)
+</span></span><span class=line><span class=cl>	      blur {
+</span></span><span class=line><span class=cl>	          enabled = true
+</span></span><span class=line><span class=cl>	          new_optimizations =true
+</span></span><span class=line><span class=cl>	          size = 4
+</span></span><span class=line><span class=cl>	          passes = 2
+</span></span><span class=line><span class=cl>	          ignore_opacity = true
+</span></span><span class=line><span class=cl>	      }
+</span></span><span class=line><span class=cl>	  }
+</span></span><span class=line><span class=cl>	  
+</span></span><span class=line><span class=cl>	  misc {
+</span></span><span class=line><span class=cl>	      disable_hyprland_logo = yes
+</span></span><span class=line><span class=cl>	      #disable_splash_rendering = true
+</span></span><span class=line><span class=cl>	      #no_direct_scanout = true
+</span></span><span class=line><span class=cl>	      no_direct_scanout = true
+</span></span><span class=line><span class=cl>	  }
+</span></span><span class=line><span class=cl>	  
+</span></span><span class=line><span class=cl>	  animations {
+</span></span><span class=line><span class=cl>	      enabled=1
+</span></span><span class=line><span class=cl>	      # bezier=overshot,0.05,0.9,0.1,1.1
+</span></span><span class=line><span class=cl>	      bezier=overshot,0.13,0.99,0.29,1.1
+</span></span><span class=line><span class=cl>	      animation=windows, 1, 4, overshot
+</span></span><span class=line><span class=cl>	      animation=windowsOut,1, 7, overshot, popin 80%
+</span></span><span class=line><span class=cl>	      animation=border, 1, 10, default
+</span></span><span class=line><span class=cl>	      animation=fade, 1, 1, default
+</span></span><span class=line><span class=cl>	      animation=workspaces,1,4,overshot,slidevert
+</span></span><span class=line><span class=cl>	  }
+</span></span><span class=line><span class=cl>	  
+</span></span><span class=line><span class=cl>	  
+</span></span><span class=line><span class=cl>	  
+</span></span><span class=line><span class=cl>	  dwindle {
+</span></span><span class=line><span class=cl>	      pseudotile = yes 
+</span></span><span class=line><span class=cl>	      preserve_split = yes
+</span></span><span class=line><span class=cl>	      no_gaps_when_only = 1 
+</span></span><span class=line><span class=cl>	  }
+</span></span><span class=line><span class=cl>	  
+</span></span><span class=line><span class=cl>	  master {
+</span></span><span class=line><span class=cl>	      new_is_master = true
+</span></span><span class=line><span class=cl>	  }
+</span></span><span class=line><span class=cl>	  
+</span></span><span class=line><span class=cl>	  gestures {
+</span></span><span class=line><span class=cl>	      workspace_swipe = off
+</span></span><span class=line><span class=cl>	  }
+</span></span><span class=line><span class=cl>	  
+</span></span><span class=line><span class=cl>	  device:epic-mouse-v1 {
+</span></span><span class=line><span class=cl>	      sensitivity = -0.5
+</span></span><span class=line><span class=cl>	  }
+</span></span><span class=line><span class=cl>	  
+</span></span><span class=line><span class=cl>	  windowrule = float,^(pavucontrol)$
+</span></span><span class=line><span class=cl>	  windowrule = float, title:^(btop)$
+</span></span><span class=line><span class=cl>	  windowrule = maximize,title:^(nsxiv)$
+</span></span><span class=line><span class=cl>	  
+</span></span><span class=line><span class=cl>	  windowrule = float,^(thunar)$
+</span></span><span class=line><span class=cl>	  
+</span></span><span class=line><span class=cl>	  windowrulev2 = size 1200 800,class:^(thunar)$
+</span></span><span class=line><span class=cl>	  windowrulev2 = center,class:^(thunar)$
+</span></span><span class=line><span class=cl>	  windowrulev2 = animation popin 80%,class:^(thunar)$
+</span></span><span class=line><span class=cl>	  windowrulev2 = opacity 0.95 0.95,class:^(thunar)$
+</span></span><span class=line><span class=cl>	  
+</span></span><span class=line><span class=cl>	  windowrulev2 = center,class:^(wofi)$
+</span></span><span class=line><span class=cl>	  windowrulev2 = opacity 0.95 0.95,class:^(wofi)$
+</span></span><span class=line><span class=cl>	  windowrulev2 = bordersize 2,class:^(wofi)$
+</span></span><span class=line><span class=cl>	  
+</span></span><span class=line><span class=cl>	  windowrule = float,title:^(fly_is_kitty)$
+</span></span><span class=line><span class=cl>	  windowrule = move 30%,title:(fly_is_kitty)$
+</span></span><span class=line><span class=cl>	  windowrule = size 1000 600,title:^(fly_is_kitty)$
+</span></span><span class=line><span class=cl>	  windowrule = bordersize 2,title:^(fly_is_kitty)$
+</span></span><span class=line><span class=cl>	  
+</span></span><span class=line><span class=cl>	  #windowrule = tile,:^(kitty)$
+</span></span><span class=line><span class=cl>	  windowrulev2 = opacity 0.8 0.8,class:^(kitty)$
+</span></span><span class=line><span class=cl>	  
+</span></span><span class=line><span class=cl>	  windowrule = animation slide,title:^(all_is_kitty)$
+</span></span><span class=line><span class=cl>	  windowrule = float,title:^(all_is_kitty)$
+</span></span><span class=line><span class=cl>	  
+</span></span><span class=line><span class=cl>	  windowrule = float,title:^(lf)$
+</span></span><span class=line><span class=cl>	  windowrule = size 1200 800,title:^(lf)$
+</span></span><span class=line><span class=cl>	  windowrule = center,title:(lf)$
+</span></span><span class=line><span class=cl>	  windowrule = bordersize 2,title:^(lf)$
+</span></span><span class=line><span class=cl>	  
+</span></span><span class=line><span class=cl>	  $mainMod = SUPER
+</span></span><span class=line><span class=cl>	  bind = $mainMod, Q, exec, kitty  #open the terminal
+</span></span><span class=line><span class=cl>	  bind = $mainMod, W, killactive, # close the active window
+</span></span><span class=line><span class=cl>	  bind = $mainMod, M, exec, wlogout --protocol layer-shell # show the logout window
+</span></span><span class=line><span class=cl>	  bind = $mainMod SHIFT, M, exit, # Exit Hyprland all together no (force quit Hyprland)
+</span></span><span class=line><span class=cl>	  bind = $mainMod, E, exec, thunar # Show the graphical file browser
+</span></span><span class=line><span class=cl>	  bind = $mainMod, V, togglefloating, # Allow a window to float
+</span></span><span class=line><span class=cl>	  bind = $mainMod, SPACE, exec, wofi # Show the graphical app launcher
+</span></span><span class=line><span class=cl>	  bind = $mainMod, P, pseudo, # dwindle
+</span></span><span class=line><span class=cl>	  bind = $mainMod, J, togglesplit, # dwindle
+</span></span><span class=line><span class=cl>	  bind = $mainMod, B, exec, killall waybar || waybar
+</span></span><span class=line><span class=cl>	  bind = $mainMod, D, exec, kitty lf
+</span></span><span class=line><span class=cl>	  bind = $mainMod, S, exec, fish -c &#39;hyprshot -m region&#39;
+</span></span><span class=line><span class=cl>	  bind = $mainMod, A, exec, kitty --title fly_is_kitty
+</span></span><span class=line><span class=cl>	  bind = $mainMod, F, fullscreen
+</span></span><span class=line><span class=cl>	  bind = $mainMod, L, exec, logseq
+</span></span><span class=line><span class=cl>	  bind = $mainMod, X, exec, cliphist list | wofi --dmenu | cliphist decode | wl-copy
+</span></span><span class=line><span class=cl>	  
+</span></span><span class=line><span class=cl>	  # Move focus with mainMod + arrow keys
+</span></span><span class=line><span class=cl>	  bind = $mainMod, left, movefocus, l
+</span></span><span class=line><span class=cl>	  bind = $mainMod, right, movefocus, r
+</span></span><span class=line><span class=cl>	  bind = $mainMod, up, movefocus, u
+</span></span><span class=line><span class=cl>	  bind = $mainMod, down, movefocus, d
+</span></span><span class=line><span class=cl>	  
+</span></span><span class=line><span class=cl>	  # Switch workspaces with mainMod + [0-9]
+</span></span><span class=line><span class=cl>	  bind = $mainMod, 1, workspace, 1
+</span></span><span class=line><span class=cl>	  bind = $mainMod, 2, workspace, 2
+</span></span><span class=line><span class=cl>	  bind = $mainMod, 3, workspace, 3
+</span></span><span class=line><span class=cl>	  bind = $mainMod, 4, workspace, 4
+</span></span><span class=line><span class=cl>	  bind = $mainMod, 5, workspace, 5
+</span></span><span class=line><span class=cl>	  bind = $mainMod, 6, workspace, 6
+</span></span><span class=line><span class=cl>	  bind = $mainMod, 7, workspace, 7
+</span></span><span class=line><span class=cl>	  bind = $mainMod, 8, workspace, 8
+</span></span><span class=line><span class=cl>	  bind = $mainMod, 9, workspace, 9
+</span></span><span class=line><span class=cl>	  bind = $mainMod, 0, workspace, 10
+</span></span><span class=line><span class=cl>	  
+</span></span><span class=line><span class=cl>	  # Resize windows
+</span></span><span class=line><span class=cl>	  bind = $mainMod SHIFT, left, resizeactive, -100 0
+</span></span><span class=line><span class=cl>	  bind = $mainMod SHIFT, right, resizeactive, 100 0
+</span></span><span class=line><span class=cl>	  bind = $mainMod SHIFT, up, resizeactive, 0 -100
+</span></span><span class=line><span class=cl>	  bind = $mainMod SHIFT, down, resizeactive, 0 100
+</span></span><span class=line><span class=cl>	  
+</span></span><span class=line><span class=cl>	  # Move windows
+</span></span><span class=line><span class=cl>	  bind = $mainMod ALT, left, movewindow, l
+</span></span><span class=line><span class=cl>	  bind = $mainMod ALT, right, movewindow, r
+</span></span><span class=line><span class=cl>	  bind = $mainMod ALT, up, movewindow, u
+</span></span><span class=line><span class=cl>	  bind = $mainMod ALT, down, movewindow, d
+</span></span><span class=line><span class=cl>	  
+</span></span><span class=line><span class=cl>	  # Move active window to a workspace with mainMod + SHIFT + [0-9]
+</span></span><span class=line><span class=cl>	  bind = $mainMod SHIFT, 1, movetoworkspace, 1
+</span></span><span class=line><span class=cl>	  bind = $mainMod SHIFT, 2, movetoworkspace, 2
+</span></span><span class=line><span class=cl>	  bind = $mainMod SHIFT, 3, movetoworkspace, 3
+</span></span><span class=line><span class=cl>	  bind = $mainMod SHIFT, 4,movetoworkspace, 4
+</span></span><span class=line><span class=cl>	  bind = $mainMod SHIFT, 5, movetoworkspace, 5
+</span></span><span class=line><span class=cl>	  bind = $mainMod SHIFT, 6, movetoworkspace, 6
+</span></span><span class=line><span class=cl>	  bind = $mainMod SHIFT, 7, movetoworkspace, 7
+</span></span><span class=line><span class=cl>	  bind = $mainMod SHIFT, 8, movetoworkspace, 8
+</span></span><span class=line><span class=cl>	  bind = $mainMod SHIFT, 9, movetoworkspace, 9
+</span></span><span class=line><span class=cl>	  bind = $mainMod SHIFT, 0, movetoworkspace, 10
+</span></span><span class=line><span class=cl>	  
+</span></span><span class=line><span class=cl>	  # Scroll through existing workspaces with mainMod + scroll
+</span></span><span class=line><span class=cl>	  bind = $mainMod, mouse_down, workspace, e+1
+</span></span><span class=line><span class=cl>      bind = $mainMod, mouse_up, workspace, e-1
+</span></span><span class=line><span class=cl>	  
+</span></span><span class=line><span class=cl>	  # Move/resize windows with mainMod + LMB/RMB and dragging
+</span></span><span class=line><span class=cl>	  bindm = $mainMod, mouse:272, movewindow
+</span></span><span class=line><span class=cl>	  bindm = $mainMod, mouse:273, resizewindow
+</span></span><span class=line><span class=cl>	```
+</span></span></code></pre></td></tr></table></div></div></section><footer class=article-footer><section class=article-tags><a href=/hugo/tags/archlinux/>Archlinux</a>
+<a href=/hugo/tags/hyprland/>Hyprland</a>
+<a href=/hugo/tags/nvidia/>Nvidia</a>
+<a href=/hugo/tags/window-manager/>Window Manager</a></section><section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg><span>Licensed under CC BY-NC-SA 4.0</span></section></footer></article><div class=disqus-container><div id=disqus_thread></div><script type=application/javascript>window.disqus_config=function(){},function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById("disqus_thread").innerHTML="Disqus comments not available by default when the website is previewed locally.";return}var t=document,e=t.createElement("script");e.async=!0,e.src="//Mio.disqus.com/embed.js",e.setAttribute("data-timestamp",+new Date),(t.head||t.body).appendChild(e)}()</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div><style>.disqus-container{background-color:var(--card-background);border-radius:var(--card-border-radius);box-shadow:var(--shadow-l1);padding:var(--card-padding)}</style><script>window.addEventListener("onColorSchemeChange",e=>{typeof DISQUS=="object"&&DISQUS.reset({reload:!0})})</script><footer class=site-footer><section class=copyright>&copy;
+2020 -
+2023 Mio</section><section class=powerby>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>Theme <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.20.0>Stack</a></b> designed by <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a></section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/hugo/ts/main.js defer></script>
+<script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>
